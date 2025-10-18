@@ -1,0 +1,8 @@
+torch
+transformers
+datasets
+Pillow
+tqdm
+scikit-learn
+pytest
+openai

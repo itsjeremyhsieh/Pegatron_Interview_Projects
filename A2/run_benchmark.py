@@ -19,7 +19,7 @@ def main():
 
     # Run evaluation
     results = evaluate_model(model, dataset, max_samples=args.max_samples)
-    print(f"Final results for {args.model}: {results}")
+    print(f"Final results for {args.model}: accuracy: {results['accuracy']} | {results['correct_str']}")
 
 if __name__ == "__main__":
     main()

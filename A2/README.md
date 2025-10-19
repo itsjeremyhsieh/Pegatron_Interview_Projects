@@ -3,7 +3,7 @@
 This script evaluates a vision-language model on MMMU multiple-choice questions.
 
 ### Features
-- Loads MMMU split by subject (e.g., Accounting, Computer_Science)
+- Loads [MMMU](https://huggingface.co/datasets/MMMU/MMMU) dataset split by subject (e.g., Accounting, Computer_Science)
 - Sends question + image + MCQ options to an OpenAI vision-capable model
 - Forces single-letter answers (A/B/C/...) and computes accuracy
 
@@ -14,12 +14,12 @@ This script evaluates a vision-language model on MMMU multiple-choice questions.
 - `A2/run_benchmark.py` – CLI entry point
 
 ### Setup
-1) Python 3.10+
-2) Install deps:
+1) Install Python 3.10+
+2) Install dependencies:
 ```
 pip install -r A2/requirements.txt
 ```
-1) Set your OpenAI API key (zsh/bash):
+3) Set OpenAI API key (zsh/bash):
 ```
 export OPENAI_API_KEY="sk-..."
 ```
@@ -38,7 +38,6 @@ Flags:
 - `--max_samples` – limit evaluated samples
 
 ### Notes
-- The evaluator trusts the API to return a single letter; a small regex extracts A–J.
 - Images are passed as data URLs (JPEG) to the OpenAI chat completions API.
 - If you observe non-letter outputs, tighten the prompt in `A2/model_interface.py`.
 

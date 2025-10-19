@@ -27,10 +27,8 @@ def load_mmmu_dataset(split="validation", subject: str = "Accounting"):
         except (ValueError, SyntaxError):
             print(f"Warning: Failed to parse options: {options_str}")
             options_list = []
-        # Use image_1 as the primary image (first image)
         image = data.get("image_1")
 
-        # Keep only the fields needed for evaluation
         return {
             "id": data.get("id"),
             "question": data.get("question"),

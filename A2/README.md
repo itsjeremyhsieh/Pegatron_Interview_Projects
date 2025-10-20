@@ -46,8 +46,8 @@ To run all unit tests:
 
 To check the test coverage:
 ```bash
-coverage run -m unittest discover -s tests
-coverage report -m
+python3 -m coverage run --omit="tests/*" -m unittest discover -s tests
+python3 -m coverage report -m
 ```
 This will display the coverage of each file and function in the codebase.
 

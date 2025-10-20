@@ -43,12 +43,7 @@ def evaluate_model(model, dataset, max_samples=50):
         elif isinstance(label, int) and 0 <= label < len(letters):
             true_letter = letters[label]
         else:
-            try:
-                idx = [str(o).strip().lower()
-                       for o in options].index(str(label).strip().lower())
-                true_letter = letters[idx]
-            except ValueError:
-                true_letter = ""
+            true_letter = ""
 
         y_true_letters.append(true_letter)
         y_pred_letters.append(pred_letter)

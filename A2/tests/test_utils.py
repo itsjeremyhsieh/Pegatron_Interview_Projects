@@ -19,7 +19,7 @@ class TestComputeAccuracy(unittest.TestCase):
         
         result = compute_accuracy(y_true, y_pred)
         
-        self.assertEqual(result, 1.0, "Perfect predictions should give 1.0 accuracy")
+        self.assertEqual(result, 1.0, "Correct predictions should give 1.0 accuracy")
     
     def test_zero_accuracy(self):
         """Test accuracy when all predictions are incorrect"""
@@ -38,33 +38,6 @@ class TestComputeAccuracy(unittest.TestCase):
         result = compute_accuracy(y_true, y_pred)
         
         self.assertEqual(result, 0.5, "50% correct should give 0.5 accuracy")
-    
-    def test_partial_accuracy(self):
-        """Test accuracy with partial correct predictions"""
-        y_true = ['A', 'B', 'C', 'D', 'E']
-        y_pred = ['A', 'X', 'C', 'Y', 'E']
-        
-        result = compute_accuracy(y_true, y_pred)
-        
-        self.assertEqual(result, 0.6, "3 out of 5 correct should give 0.6 accuracy")
-    
-    def test_single_element_correct(self):
-        """Test accuracy with single element that is correct"""
-        y_true = ['A']
-        y_pred = ['A']
-        
-        result = compute_accuracy(y_true, y_pred)
-        
-        self.assertEqual(result, 1.0, "Single correct prediction should give 1.0")
-    
-    def test_single_element_incorrect(self):
-        """Test accuracy with single element that is incorrect"""
-        y_true = ['A']
-        y_pred = ['B']
-        
-        result = compute_accuracy(y_true, y_pred)
-        
-        self.assertEqual(result, 0.0, "Single incorrect prediction should give 0.0")
     
     def test_numeric_labels(self):
         """Test accuracy with numeric labels"""

@@ -59,8 +59,7 @@ class TestLoadMmmuDataset(unittest.TestCase):
         mock_load_dataset.return_value = mock_dataset
         
         result = load_mmmu_dataset()
-        
-        # Should print warning but continue
+
         warning_printed = any("Warning: could not cast 'image_1' column" in str(call_args) 
                               for call_args in mock_print.call_args_list)
         self.assertTrue(warning_printed)
@@ -70,8 +69,7 @@ class TestLoadMmmuDataset(unittest.TestCase):
     def test_preprocess_valid_options(self, mock_load_dataset):
         """Test preprocessing with valid options string"""
         from data_loader import load_mmmu_dataset
-        
-        # Create a mock dataset with sample data
+  
         sample_data = {
             "id": ["q1"],
             "question": ["What is 2+2?"],
@@ -148,8 +146,7 @@ class TestLoadMmmuDataset(unittest.TestCase):
         
         with patch.object(mock_dataset, 'cast_column', return_value=mock_dataset):
             result = load_mmmu_dataset()
-        
-        # Should default to empty list
+
         self.assertEqual(result[0]["options"], [])
     
     @patch('data_loader.load_dataset')

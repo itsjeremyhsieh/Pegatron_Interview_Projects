@@ -6,7 +6,6 @@ from openai import OpenAI
 
 class BenchmarkModel:
     """
-    OpenAI-based multimodal inference using a vision-capable chat model.
     Set OPENAI_API_KEY in the environment.
     """
 
@@ -22,7 +21,6 @@ class BenchmarkModel:
         return f"data:image/jpeg;base64,{b64}"
 
     def predict(self, question: str, image: Image.Image, options: list[str]):
-        # Build options text A., B., ...
         options_text = "".join(
             [f"{chr(ord('A')+i)}. {opt}\n" for i, opt in enumerate(options)])
 

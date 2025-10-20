@@ -14,10 +14,8 @@ def load_mmmu_dataset(split="validation", subject: str = "Accounting"):
             f"Warning: could not cast 'image_1' column to PIL: {_e}.")
 
     def preprocess(data):
-        # Options are stored as a string that looks like a Python list
         options_str = data.get("options", "[]")
 
-        # Parse the string representation of the list
         import ast
         try:
             options_list = ast.literal_eval(options_str)

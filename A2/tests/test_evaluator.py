@@ -1,52 +1,41 @@
-"""
-Unit tests for evaluator.py
-
-To run these tests:
-    # From A2 directory:
-    python -m unittest tests.test_evaluator -v
-"""
-
+from evaluator import normalize_to_letter, evaluate_model
 import unittest
 import sys
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-# Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from evaluator import normalize_to_letter, evaluate_model
 
 
 class TestNormalizeToLetter(unittest.TestCase):
     """Test suite for normalize_to_letter function"""
-    
+
     def test_single_letter_uppercase(self):
         """Test extraction of single uppercase letter"""
         self.assertEqual(normalize_to_letter("A"), "A")
         self.assertEqual(normalize_to_letter("B"), "B")
         self.assertEqual(normalize_to_letter("J"), "J")
-    
+
     def test_single_letter_lowercase(self):
         """Test extraction of single lowercase letter"""
         self.assertEqual(normalize_to_letter("a"), "A")
         self.assertEqual(normalize_to_letter("b"), "B")
         self.assertEqual(normalize_to_letter("j"), "J")
-    
+
     def test_letter_with_text(self):
         """Test extraction of letter from text"""
         self.assertEqual(normalize_to_letter("The answer is A"), "A")
         self.assertEqual(normalize_to_letter("Choose B"), "B")
         self.assertEqual(normalize_to_letter("Option C is correct"), "C")
-    
+
     def test_empty_string(self):
         """Test handling of empty string"""
         self.assertEqual(normalize_to_letter(""), "")
-    
+
     def test_none_input(self):
         """Test handling of None input"""
         self.assertEqual(normalize_to_letter(None), "")
 
-    
     def test_whitespace_handling(self):
         """Test handling of whitespace"""
         self.assertEqual(normalize_to_letter("  A  "), "A")
@@ -55,7 +44,7 @@ class TestNormalizeToLetter(unittest.TestCase):
 
 class TestEvaluateModel(unittest.TestCase):
     """Test suite for evaluate_model function"""
-    
+
     def setUp(self):
         """Set up test fixtures"""
         self.mock_model = Mock()
@@ -73,55 +62,59 @@ class TestEvaluateModel(unittest.TestCase):
                 "label": "B"
             }
         ]
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_basic_evaluation(self, mock_print, mock_tqdm):
         """Test basic evaluation with correct predictions"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.side_effect = ["B", "B"]
-        
-        result = evaluate_model(self.mock_model, self.sample_dataset, max_samples=2)
-        
+
+        result = evaluate_model(
+            self.mock_model, self.sample_dataset, max_samples=2)
+
         self.assertEqual(result["accuracy"], 1.0)
         self.assertEqual(result["correct_str"], "2/2")
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_partial_correct(self, mock_print, mock_tqdm):
         """Test evaluation with some incorrect predictions"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.side_effect = ["B", "A"]
-        
-        result = evaluate_model(self.mock_model, self.sample_dataset, max_samples=2)
-        
+
+        result = evaluate_model(
+            self.mock_model, self.sample_dataset, max_samples=2)
+
         self.assertEqual(result["accuracy"], 0.5)
         self.assertEqual(result["correct_str"], "1/2")
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_all_incorrect(self, mock_print, mock_tqdm):
         """Test evaluation with all incorrect predictions"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.side_effect = ["A", "A"]
-        
-        result = evaluate_model(self.mock_model, self.sample_dataset, max_samples=2)
-        
+
+        result = evaluate_model(
+            self.mock_model, self.sample_dataset, max_samples=2)
+
         self.assertEqual(result["accuracy"], 0.0)
         self.assertEqual(result["correct_str"], "0/2")
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_max_samples_limit(self, mock_print, mock_tqdm):
         """Test that max_samples limits the number of processed samples"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.return_value = "B"
-        
-        result = evaluate_model(self.mock_model, self.sample_dataset, max_samples=1)
-        
+
+        result = evaluate_model(
+            self.mock_model, self.sample_dataset, max_samples=1)
+
         self.assertEqual(len(result["correct_str"].split("/")[1]), 1)
         self.assertEqual(self.mock_model.predict.call_count, 1)
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_skips_samples_without_options(self, mock_print, mock_tqdm):
@@ -142,12 +135,12 @@ class TestEvaluateModel(unittest.TestCase):
             }
         ]
         self.mock_model.predict.return_value = "A"
-        
+
         result = evaluate_model(self.mock_model, dataset, max_samples=2)
-        
+
         # Should only process the second sample
         self.assertEqual(self.mock_model.predict.call_count, 1)
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_integer_label(self, mock_print, mock_tqdm):
@@ -162,35 +155,36 @@ class TestEvaluateModel(unittest.TestCase):
             }
         ]
         self.mock_model.predict.return_value = "B"
-        
+
         result = evaluate_model(self.mock_model, dataset, max_samples=1)
-        
+
         self.assertEqual(result["accuracy"], 1.0)
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_model_predict_called_correctly(self, mock_print, mock_tqdm):
         """Test that model.predict is called with correct arguments"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.return_value = "B"
-        
+
         evaluate_model(self.mock_model, self.sample_dataset, max_samples=1)
-        
+
         # Check first call
         call_args = self.mock_model.predict.call_args[0]
         self.assertEqual(call_args[0], "What is 2+2?")
         self.assertIsNone(call_args[1])
         self.assertEqual(call_args[2], ["3", "4", "5"])
-    
+
     @patch('evaluator.tqdm')
     @patch('builtins.print')
     def test_return_structure(self, mock_print, mock_tqdm):
         """Test that return value has correct structure"""
         mock_tqdm.return_value = MagicMock()
         self.mock_model.predict.return_value = "B"
-        
-        result = evaluate_model(self.mock_model, self.sample_dataset, max_samples=1)
-        
+
+        result = evaluate_model(
+            self.mock_model, self.sample_dataset, max_samples=1)
+
         self.assertIn("accuracy", result)
         self.assertIn("correct_str", result)
         self.assertIsInstance(result["accuracy"], float)

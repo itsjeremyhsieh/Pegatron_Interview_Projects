@@ -49,11 +49,9 @@ class BenchmarkModel:
             resp = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
-                temperature=0,
-                max_tokens=4,
             )
             result = resp.choices[0].message.content or ""
-            print(f"Debug - OpenAI raw: {result}")
+            print(f"Detail - OpenAI response: {result}")
             return result
         except Exception as e:
             print(f"Debug - OpenAI prediction error: {e}")

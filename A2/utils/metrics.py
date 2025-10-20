@@ -1,4 +1,3 @@
-# utils/metrics.py
 from sklearn.metrics import accuracy_score
 
 def compute_accuracy(y_true, y_pred):

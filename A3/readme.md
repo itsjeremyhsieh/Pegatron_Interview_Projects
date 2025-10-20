@@ -1,4 +1,4 @@
-# Smart Factory Alert Agent (a3.ipynb)
+# A3: Smart Factory Alert Agent
 
 ## Overview
 This notebook simulates a smart-factory equipment anomaly detection pipeline that combines strict rule-based checks with a supervised ML model (RandomForest) and SHAP explanations. It generates synthetic sensor data, injects anomalies and missing values, trains a RandomForest on an initial window, explains ML anomalies with SHAP, computes rule scores, merges alerts, and visualizes results.
@@ -68,7 +68,6 @@ Example run in notebook: g`enerate_dummy_data(n_rows=150, interval_minutes=5, an
   - temp contribution: abs(distance beyond 43–52) added directly
   - pressure contribution: abs(distance beyond 0.97–1.08) * 10
   - vibration contribution: (vibration - 0.07) * 100 if > 0.07
-  - result rounded to 4 decimals
 - rule_anomalies DataFrame contains timestamp, temp, pressure, vibration, score, alert_reasons.
 
 ## Combining alerts

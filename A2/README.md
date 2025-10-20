@@ -9,7 +9,7 @@ This script evaluates a vision-language model on MMMU multiple-choice questions.
 
 ### Structure
 - `A2/data_loader.py` – loads and preprocesses MMMU (image_1, options, label)
-- `A2/model_interface.py` – OpenAI client; formats prompt and image
+- `A2/model_interface.py` – OpenAI client, formats prompt and image
 - `A2/evaluator.py` – runs the loop, normalizes model output to a letter
 - `A2/run_benchmark.py` – CLI entry point
 
@@ -36,6 +36,21 @@ Flags:
 - `--model` – OpenAI model name (vision-capable), e.g. `gpt-4o-mini`, `gpt-4o`
 - `--subject` – MMMU subject subset (e.g., `Accounting`, `Computer_Science`)
 - `--max_samples` – limit evaluated samples
+
+## Running Unit Tests and Coverage
+
+To ensure that all functions in the codebase are working correctly, we provide unit tests along with a coverage report. Follow the steps below to execute the tests.
+
+To run all unit tests:
+`python3 -m unittest discover -s tests`
+
+To check the test coverage:
+```bash
+coverage run -m unittest discover -s tests
+coverage report -m
+```
+This will display the coverage of each file and function in the codebase.
+
 
 ### Notes
 - Images are passed as data URLs (JPEG) to the OpenAI chat completions API.

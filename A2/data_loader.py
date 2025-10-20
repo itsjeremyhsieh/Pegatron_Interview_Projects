@@ -1,4 +1,3 @@
-# data_loader.py
 from datasets import load_dataset, Image as HFImage
 
 

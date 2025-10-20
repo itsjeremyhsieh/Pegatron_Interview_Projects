@@ -1,4 +1,3 @@
-# run_benchmark.py
 import argparse
 from data_loader import load_mmmu_dataset
 from model_interface import BenchmarkModel

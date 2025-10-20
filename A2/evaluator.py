@@ -18,8 +18,10 @@ def normalize_to_letter(pred: str) -> str:
 def evaluate_model(model, dataset, max_samples=50):
     y_true_letters, y_pred_letters = [], []
 
-    for i, sample in enumerate(tqdm(dataset, desc="Evaluating")):
-        if i >= max_samples:
+    processed = 0
+    pbar = tqdm(total=max_samples)
+    for sample in dataset:
+        if processed >= max_samples:
             break
 
         question = sample["question"]
@@ -27,7 +29,7 @@ def evaluate_model(model, dataset, max_samples=50):
         options = sample["options"]
         label = sample["label"]
 
-        if not options or len(options) == 0:
+        if not options:
             continue
 
         # Letters corresponding to options
@@ -51,7 +53,10 @@ def evaluate_model(model, dataset, max_samples=50):
 
         y_true_letters.append(true_letter)
         y_pred_letters.append(pred_letter)
-
+        
+        processed += 1
+        pbar.update(1)
+    pbar.close()
     correct_count = 0
     print("\nDetail:")
     for i in range(len(y_true_letters)):
